@@ -1,4 +1,4 @@
-export let _USERS = [
+export const _USERS = [
   {
     id: '1',
     name: 'Gogi Doe',
@@ -6,5 +6,5 @@ export let _USERS = [
     transactions: []
   }
 ]
-export let _TRANSACTIONS = []
-export let _WALLETS = []
+export const _TRANSACTIONS = []
+export const _WALLETS = []
