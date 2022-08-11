@@ -13,13 +13,19 @@
 ### отримати сутність по ID:
 
 ```javascript
-const request = fetch(`/${entityName}/${entityID}`)
+const request = fetch(`/api/${entityName}/${entityID}`)
 ```
 
 ### отримати усі сутністі якогось типу:
 
 ```javascript
-const request = fetch(`/${entityName}/`)
+const request = fetch(`/api/${entityName}/`)
+```
+
+також можна выконувати запит з параметрами, щоб отримати екземпляри сутностей з выдповыдними значеннями выдповыдних властивостей:
+
+```javascript
+const request = fetch(`/api/${entityName}?name="Gogi"`) //поверне масив користувачів з імʼям "Gogi". Якщо таких нема - пустий масив
 ```
 
 ### створити новий екземпляр сутності:
@@ -28,7 +34,7 @@ const request = fetch(`/${entityName}/`)
 const newEntity = {
   // ...
 }
-const request = fetch(`/${entityName}/`, {
+const request = fetch(`/api/${entityName}/`, {
   method: 'POST',
   body: JSON.stringify(newEntity)
 })
@@ -40,7 +46,7 @@ const request = fetch(`/${entityName}/`, {
 const modifyedEntity = {
   // ...
 }
-const request = fetch(`/${entityName}/${entityID}`, {
+const request = fetch(`/api/${entityName}/${entityID}`, {
   method: 'PUT',
   body: JSON.stringify(modifyedEntity)
 })
@@ -52,7 +58,7 @@ const request = fetch(`/${entityName}/${entityID}`, {
 const modifyedEntity = {
   // ...
 }
-const request = fetch(`/${entityName}/${entityID}`, {
+const request = fetch(`/api/${entityName}/${entityID}`, {
   method: 'PATCH',
   body: JSON.stringify(modifyedEntity)
 })
@@ -64,7 +70,7 @@ const request = fetch(`/${entityName}/${entityID}`, {
 const newEntity = {
   // ...
 }
-const request = fetch(`/${entityName}/${entityID}`, {
+const request = fetch(`/api/${entityName}/${entityID}`, {
   method: 'DELETE'
 })
 ```

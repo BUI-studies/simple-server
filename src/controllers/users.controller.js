@@ -1,9 +1,11 @@
 import UsersModel from '../models/users.model.js'
 
-const getAll = async (_, res) => {
-  const allUsers = await UsersModel.getAll()
-
-  res.status(200).send(allUsers)
+const getAll = async (req, res) => {
+  if (Object.keys(req.params).length > 0) {
+    res.status(200).send(await UsersModel.findAll(req.params))
+  } else {
+    res.status(200).send(await UsersModel.getAll())
+  }
 }
 
 const save = async (req, res) => {

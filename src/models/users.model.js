@@ -1,9 +1,11 @@
 import Model from './index.model.js'
 import { _USERS } from '../stubs/index.js'
+import { _ROLES } from '../emuns/index.js'
 
 function User(name, wallets = [], transactions = [], optId) {
   this.id = optId || (_USERS.length + 1).toString()
   this.name = name
+  this.role = _ROLES.USER
   this.wallets = wallets
   this.transactions = transactions
 }
@@ -57,7 +59,7 @@ export default class UsersModel extends Model {
     return _USERS.find(user => user.id === id)
   }
 
-  static async find(query) {
+  static async findAll(query) {
     return _USERS.filter(user => {
       return Object.keys(query).every(key => user[key] === query[key])
     })
