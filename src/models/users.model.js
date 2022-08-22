@@ -24,7 +24,6 @@ export default class UsersModel extends Model {
       throw new TypeError('Required properties missed: id or name')
 
     const user = _USERS.find(user => user.id === id)
-    console.log(id, 'user', user)
 
     if (!user) new Error('No such user')
 

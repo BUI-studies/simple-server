@@ -11,7 +11,7 @@ function Transaction(category, ownerId, wallet, amount, comment) {
 }
 
 export default class TransactionsModel extends Model {
-  static create(transaction = {}) {
+  static async create(transaction = {}) {
     if (
       !transaction.category ||
       !transaction.owner ||
@@ -28,9 +28,38 @@ export default class TransactionsModel extends Model {
       transaction.comment
     )
 
-    _TRANSACTIONS.push(newUser)
+    _TRANSACTIONS.push(newTransaction)
 
     return newTransaction
+  }
+
+  static async put(id, newEntity) {
+    if (!id || !newEntity.name || !newEntity.owner || !newEntity.type)
+      throw new TypeError('id is missed')
+
+    const transaction = _TRANSACTIONS.find(t => t.id === id)
+
+    if (!transaction) new Error('No such transaction')
+
+    const index = _TRANSACTIONS.indexOf(transaction)
+
+    _TRANSACTIONS[index] = new User(
+      newEntity.name,
+      newEntity.owner,
+      `${transaction.id}_1`
+    )
+
+    return _TRANSACTIONS[index]
+  }
+
+  static async patch(id, newEntity) {
+    const transactionToUpdate = _TRANSACTIONS.find(t => t.id === id)
+
+    Object.keys(newEntity).forEach(key => {
+      transactionToUpdate[key] = newEntity[key]
+    })
+
+    return transactionToUpdate
   }
 
   static async getAll() {
@@ -38,19 +67,28 @@ export default class TransactionsModel extends Model {
   }
 
   static async getById(id) {
-    return _TRANSACTIONS.find(tr => tr.id === id)
+    return _TRANSACTIONS.find(t => t.id === id)
   }
 
-  static async find(query) {
-    return _TRANSACTIONS.filter(tr => {
-      return Object.keys(query).every(key => tr[key] === query[key])
+  static async findAll(query) {
+    return _TRANSACTIONS.filter(t => {
+      return Object.keys(query).every(key => t[key] === query[key])
     })
   }
 
   static async remove(id) {
-    const removed = _TRANSACTIONS.find(tr => tr.id === id)
-    _TRANSACTIONS = _TRANSACTIONS.filter(tr => tr.id !== id)
+    const tr = _TRANSACTIONS.find(t => t.id === id)
+    const index = _TRANSACTIONS.indexOf(tr)
 
-    return removed
+    tr.fromWallet.transactions.splice(
+      tr.fromWallet.transactions.findIndex(t => t.id === id),
+      1
+    )
+    tr.toWallet.transactions.splice(
+      tr.toWallet.transactions.findIndex(t => t.id === id),
+      1
+    )
+
+    return _TRANSACTIONS.splice(index, 1)[0]
   }
 }
