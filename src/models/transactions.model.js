@@ -1,40 +1,31 @@
 import Model from './index.model.js'
 import { _TRANSACTIONS } from '../stubs/index.js'
 
-function Transaction(
-  type,
-  senderId,
-  senderWalletId,
-  recipientId,
-  recipientWalletId,
-  amount
-) {
+function Transaction(category, ownerId, wallet, amount, comment) {
   this.id = _TRANSACTIONS.length + 1
-  this.from = senderId
-  this.to = recipientId
-  this.fromWallet = senderWalletId
-  this.toWallet = recipientWalletId
+  this.category = category
+  this.owner = ownerId
+  this.wallet = wallet
   this.amount = amount
+  this.comment = comment
 }
 
 export default class TransactionsModel extends Model {
   static create(transaction = {}) {
     if (
-      !transaction.from ||
-      !transaction.to ||
-      !transaction.fromWallet ||
-      !transaction.toWallet ||
+      !transaction.category ||
+      !transaction.owner ||
+      !transaction.wallet ||
       !transaction.amount
     )
       throw new TypeError('Required props missing')
 
     const newTransaction = new Transaction(
-      transaction.id,
-      transaction.from,
-      transaction.to,
-      transaction.fromWallet,
-      transaction.toWallet,
-      transaction.amount
+      transaction.category,
+      transaction.owner,
+      transaction.wallet,
+      transaction.amount,
+      transaction.comment
     )
 
     _TRANSACTIONS.push(newUser)
