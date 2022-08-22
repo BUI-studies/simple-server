@@ -11,20 +11,47 @@ function Category(owner, name, icon, comment) {
 
 export default class CategoryModel extends Model {
   static async create(category = {}) {
-    if (!category.name) throw new TypeError('Required props missing')
+    if (!category.owner || !category.name || !category.icon)
+      throw new TypeError('Required props missing')
 
-    const newCategory = {
-      id: this.getNextId(),
-      name: category.name,
-      owner: category.owner,
-      type: category.type,
-      wallet: category.wallet,
-      amount: category.amount,
-      comment: category.comment
-    }
+    const newCategory = new Category(
+      category.owner,
+      category.name,
+      category.icon,
+      category.comment
+    )
 
-    this.categories.push(newCategory)
+    _CATEGORIES.push(newCategory)
 
     return newCategory
+  }
+
+  static async patch(id, newEntity) {
+    const categoryToUpdate = _CATEGORIES.find(t => t.id === id)
+
+    if (!categoryToUpdate) new Error('No such category')
+
+    const index = _CATEGORIES.indexOf(categoryToUpdate)
+
+    _CATEGORIES[index] = new Category(
+      newEntity.owner,
+      newEntity.name,
+      newEntity.icon,
+      newEntity.comment
+    )
+
+    return _CATEGORIES[index]
+  }
+
+  static async del(id) {
+    const categoryToDelete = _CATEGORIES.find(t => t.id === id)
+
+    if (!categoryToDelete) new Error('No such category')
+
+    const index = _CATEGORIES.indexOf(categoryToDelete)
+
+    _CATEGORIES.splice(index, 1)
+
+    return _CATEGORIES
   }
 }
