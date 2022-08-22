@@ -1,8 +1,9 @@
 import Model from './index.model.js'
 import { _TRANSACTIONS } from '../stubs/index.js'
 
-function Transaction(category, ownerId, wallet, amount, comment) {
+function Transaction(category, type, ownerId, wallet, amount, comment) {
   this.id = _TRANSACTIONS.length + 1
+  this.type = type
   this.category = category
   this.owner = ownerId
   this.wallet = wallet
@@ -14,6 +15,7 @@ export default class TransactionsModel extends Model {
   static async create(transaction = {}) {
     if (
       !transaction.category ||
+      !transaction.type ||
       !transaction.owner ||
       !transaction.wallet ||
       !transaction.amount
@@ -22,6 +24,7 @@ export default class TransactionsModel extends Model {
 
     const newTransaction = new Transaction(
       transaction.category,
+      transaction.type,
       transaction.owner,
       transaction.wallet,
       transaction.amount,
