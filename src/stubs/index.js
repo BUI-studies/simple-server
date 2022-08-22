@@ -11,3 +11,4 @@ export const _USERS = [
 ]
 export const _TRANSACTIONS = []
 export const _WALLETS = []
+export const _CATEGORIES = []
