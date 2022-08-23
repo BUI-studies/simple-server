@@ -10,6 +10,18 @@ function Category(owner, name, icon, comment) {
 }
 
 export default class CategoryModel extends Model {
+  static async getAll(ownerId) {
+    return _CATEGORIES.filter(c => c.owner === ownerId)
+  }
+
+  static async getById(id) {
+    return _CATEGORIES.find(t => t.id === id)
+  }
+
+  static async findAll (query) {
+    return _CATEGORIES.filter(c => Object.keys(query).every(key => c[key] === query[key]))
+  }
+
   static async create(category = {}) {
     if (!category.owner || !category.name || !category.icon)
       throw new TypeError('Required props missing')
@@ -43,7 +55,7 @@ export default class CategoryModel extends Model {
     return _CATEGORIES[index]
   }
 
-  static async del(id) {
+  static async remove(id) {
     const categoryToDelete = _CATEGORIES.find(t => t.id === id)
 
     if (!categoryToDelete) new Error('No such category')

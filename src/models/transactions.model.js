@@ -1,5 +1,5 @@
 import Model from './index.model.js'
-import { _TRANSACTIONS } from '../stubs/index.js'
+import {_TRANSACTIONS, _WALLETS} from '../stubs/index.js'
 
 function Transaction(category, type, ownerId, wallet, amount, comment) {
   this.id = _TRANSACTIONS.length + 1
@@ -82,15 +82,10 @@ export default class TransactionsModel extends Model {
   static async remove(id) {
     const tr = _TRANSACTIONS.find(t => t.id === id)
     const index = _TRANSACTIONS.indexOf(tr)
+    const wallet = _WALLETS.find(w => w.id === tr.wallet)
+    const walletIndex = wallet.transactions.findIndex(t => t.id === id)
 
-    tr.fromWallet.transactions.splice(
-      tr.fromWallet.transactions.findIndex(t => t.id === id),
-      1
-    )
-    tr.toWallet.transactions.splice(
-      tr.toWallet.transactions.findIndex(t => t.id === id),
-      1
-    )
+    wallet.transactions.splice(walletIndex, 1)
 
     return _TRANSACTIONS.splice(index, 1)[0]
   }

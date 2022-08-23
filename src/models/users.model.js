@@ -59,9 +59,7 @@ export default class UsersModel extends Model {
   }
 
   static async findAll(query) {
-    return _USERS.filter(user => {
-      return Object.keys(query).every(key => user[key] === query[key])
-    })
+    return _USERS.filter(user => Object.keys(query).every(key => user[key] === query[key]))
   }
 
   static async remove(id) {
