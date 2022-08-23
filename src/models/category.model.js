@@ -1,8 +1,8 @@
-import { _CATEGORIES } from '../stubs'
-import Model from './index.model'
+import { _CATEGORIES } from '../stubs/index.js'
+import Model from './index.model.js'
 
 function Category(owner, name, icon, comment) {
-  this.id = _CATEGORIES.length + 1
+  this.id = (_CATEGORIES.length + 1).toString()
   this.owner = owner
   this.name = name
   this.icon = icon

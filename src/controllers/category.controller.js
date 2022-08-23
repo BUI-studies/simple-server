@@ -1,4 +1,4 @@
-import CategoryModel from "../models/category.mode.js";
+import CategoryModel from "../models/category.model.js";
 
 const getAll = async (req, res) => {
   const ownerID = req.params.userID

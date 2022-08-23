@@ -11,4 +11,19 @@ export const _USERS = [
 ]
 export const _TRANSACTIONS = []
 export const _WALLETS = []
-export const _CATEGORIES = []
+export const _CATEGORIES = [
+  {
+    id: '1',
+    name: "Sudden",
+    icon: '😉',
+    comment: 'some comment',
+    owner: '1'
+  },
+  {
+    id: '2',
+    name: "Odd",
+    icon: '👀',
+    comment: 'some comment',
+    owner: '1'
+  }
+]
