@@ -2,9 +2,10 @@ import Model from './index.model.js'
 import { _USERS } from '../stubs/index.js'
 import { _ROLES } from '../emuns/index.js'
 
-function User(name, wallets = [], transactions = [], optId) {
+function User(name, password, wallets = [], transactions = [], optId) {
   this.id = optId || (_USERS.length + 1).toString()
   this.name = name
+  this.password = password
   this.role = _ROLES.USER
   this.wallets = wallets
   this.transactions = transactions
@@ -12,7 +13,12 @@ function User(name, wallets = [], transactions = [], optId) {
 
 export default class UsersModel extends Model {
   static async create(user = {}) {
-    const newUser = new User(user.name, user.wallets, user.transactions)
+    const newUser = new User(
+      user.name,
+      user.password,
+      user.wallets,
+      user.transactions
+    )
 
     _USERS.push(newUser)
 
@@ -59,7 +65,9 @@ export default class UsersModel extends Model {
   }
 
   static async findAll(query) {
-    return _USERS.filter(user => Object.keys(query).every(key => user[key] === query[key]))
+    return _USERS.filter(user =>
+      Object.keys(query).every(key => user[key] === query[key])
+    )
   }
 
   static async remove(id) {

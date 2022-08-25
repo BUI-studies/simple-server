@@ -3,7 +3,7 @@ import walletsController from '../controllers/wallets.controller.js'
 
 const walletsRoutes = express.Router()
 
-walletsRoutes.get('/', walletsController.getAll)
+walletsRoutes.get('/:id', walletsController.getAll)
 walletsRoutes.post('/', walletsController.save)
 walletsRoutes.put('/:id', walletsController.put)
 walletsRoutes.patch('/:id', walletsController.patch)

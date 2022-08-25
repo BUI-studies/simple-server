@@ -1,17 +1,18 @@
 import WalletsModel from '../models/wallets.model.js'
 
 const getAll = async (req, res) => {
-  if (Object.keys(req.params).length > 0) {
-    res.status(200).send(await WalletsModel.findAll(req.params))
+  if (Object.keys(req.query).length > 0) {
+    res.status(200).send(await WalletsModel.findAll(req.query))
   } else {
-    res.status(200).send(await WalletsModel.getAll())
+    res.status(200).send(await WalletsModel.getAll(req.params.id))
   }
 }
 
 const save = async (req, res) => {
   const wallet = req.body
 
-  if (!wallet.name || !wallet.owner) throw new TypeError('Required arguments missing: name, owner')
+  if (!wallet.name || !wallet.owner)
+    throw new TypeError('Required arguments missing: name, owner')
 
   res.send(await WalletsModel.create(wallet))
 }
@@ -27,7 +28,8 @@ const put = async (req, res) => {
   const { id } = req.params
   const wallet = req.body
 
-  if (!wallet.name || !wallet.owner) throw new TypeError('Required arguments missing: name, owner')
+  if (!wallet.name || !wallet.owner)
+    throw new TypeError('Required arguments missing: name, owner')
 
   res.send(await WalletsModel.put(id, wallet))
 }

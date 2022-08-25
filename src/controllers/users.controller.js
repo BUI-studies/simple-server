@@ -1,8 +1,8 @@
 import UsersModel from '../models/users.model.js'
 
 const getAll = async (req, res) => {
-  if (Object.keys(req.params).length > 0) {
-    res.status(200).send(await UsersModel.findAll(req.params))
+  if (Object.keys(req.query).length > 0) {
+    res.status(200).send(await UsersModel.findAll(req.query))
   } else {
     res.status(200).send(await UsersModel.getAll())
   }
@@ -11,7 +11,7 @@ const getAll = async (req, res) => {
 const save = async (req, res) => {
   const user = req.body
 
-  if (!user.name) throw new TypeError('Name is required')
+  if (!user.name || !user.password) throw new TypeError('Name is required')
 
   res.send(await UsersModel.create(user))
 }

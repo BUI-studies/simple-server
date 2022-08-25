@@ -1,5 +1,5 @@
 import Model from './index.model.js'
-import { _WALLETS} from '../stubs/index.js'
+import { _WALLETS } from '../stubs/index.js'
 
 function Wallet(name, owner, optId) {
   this.id = optId || (_WALLETS.length + 1).toString()
@@ -14,6 +14,7 @@ export default class WalletsModel extends Model {
     const newWallet = new Wallet(wallet.name, wallet.owner)
 
     _WALLETS.push(newWallet)
+    console.log(_WALLETS)
 
     return newWallet
   }
@@ -47,8 +48,8 @@ export default class WalletsModel extends Model {
     return walletToUpdate
   }
 
-  static async getAll() {
-    return _WALLETS
+  static async getAll(ownerId) {
+    return _WALLETS.filter(w => w.owner === ownerId)
   }
 
   static async getById(id) {
