@@ -1,4 +1,4 @@
-import { _ROLES } from '../emuns/index.js'
+import {_ROLES} from '../emuns/index.js'
 
 export const _USERS = [
   {
@@ -19,15 +19,7 @@ export const _USERS = [
   }
 ]
 export const _TRANSACTIONS = []
-export const _WALLETS = [
-  {
-    id: '1',
-    name: 'cash',
-    owner: '1',
-    transactions: [],
-    balance: 300
-  }
-]
+export const _WALLETS = []
 export const _CATEGORIES = [
   {
     id: '1',

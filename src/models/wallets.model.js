@@ -1,17 +1,30 @@
 import Model from './index.model.js'
 import { _WALLETS } from '../stubs/index.js'
+import {_TRANSACTION_TYPES} from "../emuns/index.js";
 
-function Wallet(name, owner, optId) {
+export function Wallet(name, owner, balance, optId) {
   this.id = optId || (_WALLETS.length + 1).toString()
   this.name = name
   this.owner = owner
   this.transactions = []
-  this.balance = 0
+  this.initialBalance = balance || 0
+  this.balance = balance || 0
+}
+
+Wallet.prototype.recalculateBalance = function() {
+  this.balance = this.transactions.reduce((acc, curr) => {
+    if(curr.type === _TRANSACTION_TYPES.INCOME) {
+      return acc + curr.amount
+    } else if(curr.type === _TRANSACTION_TYPES.OUTCOME) {
+      return acc - curr.amount
+    }
+    throw new TypeError('Invalid transaction type found')
+  }, this.initialBalance)
 }
 
 export default class WalletsModel extends Model {
   static async create(wallet = {}) {
-    const newWallet = new Wallet(wallet.name, wallet.owner)
+    const newWallet = new Wallet(wallet.name, wallet.owner, wallet.balance)
 
     _WALLETS.push(newWallet)
     console.log(_WALLETS)

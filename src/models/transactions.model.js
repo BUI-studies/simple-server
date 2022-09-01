@@ -1,8 +1,9 @@
 import Model from './index.model.js'
 import {_TRANSACTIONS, _WALLETS} from '../stubs/index.js'
+import {_TRANSACTION_TYPES} from "../emuns/index.js";
 
-function Transaction(category, type, ownerId, wallet, amount, comment) {
-  this.id = _TRANSACTIONS.length + 1
+function Transaction(category, type, ownerId, wallet, amount, comment, optionalID) {
+  this.id = optionalID || _TRANSACTIONS.length + 1
   this.type = type
   this.category = category
   this.owner = ownerId
@@ -30,8 +31,22 @@ export default class TransactionsModel extends Model {
       transaction.amount,
       transaction.comment
     )
+    const targetWallet = _WALLETS.find(w => w.id === transaction.wallet)
 
+    switch (transaction.type) {
+      case _TRANSACTION_TYPES.INCOME:
+        targetWallet.balance += transaction.amount
+        break
+      case _TRANSACTION_TYPES.OUTCOME:
+        targetWallet.balance -= transaction.amount
+        break
+      default:
+        throw new TypeError('Invalid transaction type')
+    }
+
+    targetWallet.transactions.push(newTransaction)
     _TRANSACTIONS.push(newTransaction)
+
 
     return newTransaction
   }
@@ -45,12 +60,19 @@ export default class TransactionsModel extends Model {
     if (!transaction) new Error('No such transaction')
 
     const index = _TRANSACTIONS.indexOf(transaction)
-
-    _TRANSACTIONS[index] = new User(
+    const newTransaction = new Transaction(
       newEntity.name,
       newEntity.owner,
+      newEntity.owner,
+      newEntity.wallet,
+      newEntity.amount,
+      newEntity.comment,
       `${transaction.id}_1`
     )
+
+    _TRANSACTIONS.splice(index, 1, newTransaction)
+
+    _WALLETS.find(w => w.id === newTransaction.wallet).recalculateBalance()
 
     return _TRANSACTIONS[index]
   }
@@ -61,6 +83,8 @@ export default class TransactionsModel extends Model {
     Object.keys(newEntity).forEach(key => {
       transactionToUpdate[key] = newEntity[key]
     })
+
+    _WALLETS.find(w => w.id === transactionToUpdate.wallet).recalculateBalance()
 
     return transactionToUpdate
   }

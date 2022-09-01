@@ -13,19 +13,20 @@ const save = async (req, res) => {
 
   if (!wallet.name || !wallet.owner)
     throw new TypeError('Required arguments missing: name, owner')
+  const newWallet = await WalletsModel.create(wallet)
 
-  res.send(await WalletsModel.create(wallet))
+  res.send(newWallet)
 }
 
 const patch = async (req, res) => {
-  const { id } = req.params
+  const {id} = req.params
   const wallet = req.body
 
   res.send(await WalletsModel.patch(id, wallet))
 }
 
 const put = async (req, res) => {
-  const { id } = req.params
+  const {id} = req.params
   const wallet = req.body
 
   if (!wallet.name || !wallet.owner)
@@ -35,7 +36,7 @@ const put = async (req, res) => {
 }
 
 const del = async (req, res) => {
-  const { id } = req.params
+  const {id} = req.params
 
   if (!id) throw new TypeError('Required argument id is missing')
 
