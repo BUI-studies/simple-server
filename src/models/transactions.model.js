@@ -1,8 +1,16 @@
 import Model from './index.model.js'
-import {_TRANSACTIONS, _WALLETS} from '../stubs/index.js'
-import {_TRANSACTION_TYPES} from "../emuns/index.js";
+import { _TRANSACTIONS, _WALLETS } from '../stubs/index.js'
+import { _TRANSACTION_TYPES } from '../emuns/index.js'
 
-function Transaction(category, type, ownerId, wallet, amount, comment, optionalID) {
+function Transaction(
+  category,
+  type,
+  ownerId,
+  wallet,
+  amount,
+  comment,
+  optionalID
+) {
   this.id = optionalID || _TRANSACTIONS.length + 1
   this.type = type
   this.category = category
@@ -31,14 +39,18 @@ export default class TransactionsModel extends Model {
       transaction.amount,
       transaction.comment
     )
-    const targetWallet = _WALLETS.find(w => w.id === transaction.wallet)
+    const targetWallet = _WALLETS.find(
+      w => w.id.toString() === transaction.wallet.toString()
+    )
 
     switch (transaction.type) {
       case _TRANSACTION_TYPES.INCOME:
-        targetWallet.balance += transaction.amount
+        targetWallet.balance =
+          Number(targetWallet.balance) + Number(transaction.amount)
         break
       case _TRANSACTION_TYPES.OUTCOME:
-        targetWallet.balance -= transaction.amount
+        targetWallet.balance =
+          Number(targetWallet.balance) - Number(transaction.amount)
         break
       default:
         throw new TypeError('Invalid transaction type')
@@ -46,7 +58,6 @@ export default class TransactionsModel extends Model {
 
     targetWallet.transactions.push(newTransaction)
     _TRANSACTIONS.push(newTransaction)
-
 
     return newTransaction
   }
@@ -89,8 +100,9 @@ export default class TransactionsModel extends Model {
     return transactionToUpdate
   }
 
-  static async getAll() {
-    return _TRANSACTIONS
+  static async getAll(id) {
+    console.log(id, _TRANSACTIONS)
+    return _TRANSACTIONS.filter(t => t.owner === id)
   }
 
   static async getById(id) {

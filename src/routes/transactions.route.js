@@ -3,7 +3,7 @@ import transactionsController from '../controllers/transactions.controller.js'
 
 const transactionsRoutes = express.Router()
 
-transactionsRoutes.get('/', transactionsController.getAll)
+transactionsRoutes.get('/:id', transactionsController.getAll)
 transactionsRoutes.post('/', transactionsController.save)
 transactionsRoutes.put('/:id', transactionsController.put)
 transactionsRoutes.patch('/:id', transactionsController.patch)

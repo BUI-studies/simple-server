@@ -19,14 +19,14 @@ const save = async (req, res) => {
 }
 
 const patch = async (req, res) => {
-  const {id} = req.params
+  const { id } = req.params
   const wallet = req.body
 
   res.send(await WalletsModel.patch(id, wallet))
 }
 
 const put = async (req, res) => {
-  const {id} = req.params
+  const { id } = req.params
   const wallet = req.body
 
   if (!wallet.name || !wallet.owner)
@@ -36,7 +36,7 @@ const put = async (req, res) => {
 }
 
 const del = async (req, res) => {
-  const {id} = req.params
+  const { id } = req.params
 
   if (!id) throw new TypeError('Required argument id is missing')
 

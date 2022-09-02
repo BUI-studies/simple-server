@@ -2,10 +2,14 @@ import TransactionsModel from '../models/transactions.model.js'
 import { _TRANSACTION_TYPES } from '../emuns/index.js'
 
 const getAll = async (req, res) => {
-  if (Object.keys(req.params).length > 0) {
-    res.status(200).send(await TransactionsModel.findAll(req.params))
+  const ownerID = req.params.id
+
+  if (Object.keys(req.query).length > 0) {
+    res
+      .status(200)
+      .send(await TransactionsModel.findAll({ ...req.query, owner: ownerID }))
   } else {
-    res.status(200).send(await TransactionsModel.getAll())
+    res.status(200).send(await TransactionsModel.getAll(ownerID))
   }
 }
 
